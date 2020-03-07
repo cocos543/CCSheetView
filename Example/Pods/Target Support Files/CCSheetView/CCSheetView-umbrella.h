@@ -10,8 +10,13 @@
 #endif
 #endif
 
-#import "CCSheetTVCell.h"
+#import "CCFirstColumnFixedContentItem.h"
+#import "CCFirstColumnFixedSheetCell.h"
+#import "CCFirstColumnView.h"
+#import "CCSheetCellComponent.h"
 #import "CCSheetView.h"
+#import "CCSheetViewColumnCell.h"
+#import "CCSheetViewTypes.h"
 
 FOUNDATION_EXPORT double CCSheetViewVersionNumber;
 FOUNDATION_EXPORT const unsigned char CCSheetViewVersionString[];

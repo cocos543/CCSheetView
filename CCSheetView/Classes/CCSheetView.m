@@ -1,6 +1,6 @@
 //
 //  CCSheetView.m
-//
+//  
 //
 //  Created by Cocos on 2020/2/27.
 //  Copyright © 2020 Cocos. All rights reserved.
@@ -16,6 +16,7 @@
 @end
 
 @implementation CCSheetView
+@dynamic delegate;
 
 - (NSMutableDictionary<NSNumber *,NSValue *> *)sectionOffsetCache {
     if (!_sectionOffsetCache) {
@@ -27,7 +28,7 @@
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     self = [super initWithFrame:frame style:style];
     if (self) {
-        [self registerClass:CCSheetTVCell.class forCellReuseIdentifier:CCSheetFirstFixedCellReuseIdentifier];
+        [self registerClass:CCSheetCellComponent.class forCellReuseIdentifier:CCSheetCellReuseIdentifier];
         [self addObserver:self forKeyPath:NSStringFromSelector(@selector(contentOffset)) options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
@@ -39,15 +40,19 @@
 
 - (UITableViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [super dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    if ([cell isKindOfClass:CCSheetTVCell.class]) {
-        CCSheetTVCell *sheetCell = (CCSheetTVCell *)cell;
+    if ([cell isKindOfClass:CCSheetCellComponent.class]) {
+        CCSheetCellComponent *sheetCell = (CCSheetCellComponent *)cell;
+        
+        // 代理必须实现该方法
+        sheetCell.columnWidths = [self.delegate sheetView:self columnsNumberAndWidthsInSection:indexPath.section];
+        
         [sheetCell setNotificationDelegate:self];
         // 新的cell在出现在屏幕之前, 最好是能够知道他初始的contentOffset, 所以这里需要找到合适的contentOffset设置给他
         
         // 标记是否在屏幕上找到相同的section, 如果没有, 则从cache中找到初始的offset
         BOOL bingoFlag = NO;
         for (UITableViewCell *c in self.visibleCells) {
-            if (![c isKindOfClass:CCSheetTVCell.class]) {
+            if (![c isKindOfClass:CCSheetCellComponent.class]) {
                 continue;
             }
             
@@ -55,7 +60,7 @@
                 continue;
             }
             
-            CCSheetTVCell *visibleCell = (CCSheetTVCell *)c;
+            CCSheetCellComponent *visibleCell = (CCSheetCellComponent *)c;
             sheetCell.disableScrollNotify = YES;
             [sheetCell.scrollView setContentOffset:visibleCell.scrollView.contentOffset animated:NO];
             sheetCell.disableScrollNotify = NO;
@@ -77,8 +82,7 @@
 }
 
 #pragma mark - CCSheetTVCellScrollNotifyDelegate
-- (void)sheetCell:(CCSheetTVCell *)cell scrollingOffset:(CGPoint)offset withState:(UIGestureRecognizerState)state {
-    NSLog(@"cell[%p] offset:%@ state:%@", cell, NSStringFromCGPoint(offset), @(state));
+- (void)sheetCell:(CCSheetCellComponent *)cell scrollingOffset:(CGPoint)offset withState:(UIGestureRecognizerState)state {
     NSIndexPath *indexPath = [self indexPathForCell:cell];
     self.sectionOffsetCache[@(indexPath.section)] = [NSValue valueWithCGPoint:offset];
     
@@ -87,7 +91,7 @@
         if (c == cell) {
             continue;
         }
-        if (![c isKindOfClass:CCSheetTVCell.class]) {
+        if (![c isKindOfClass:CCSheetCellComponent.class]) {
             continue;
         }
         
@@ -95,7 +99,7 @@
             continue;
         }
         
-        CCSheetTVCell *visibleCell = (CCSheetTVCell *)c;
+        CCSheetCellComponent *visibleCell = (CCSheetCellComponent *)c;
         visibleCell.disableScrollNotify = YES;
         [visibleCell.scrollView setContentOffset:offset animated:NO];
         visibleCell.disableScrollNotify = NO;
