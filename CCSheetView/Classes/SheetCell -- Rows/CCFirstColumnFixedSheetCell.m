@@ -26,7 +26,12 @@ CCReuseIdentifierName * _Nonnull const CCFirstColumnFixedSheetCellReuseIdentifie
         // TODO:
         [self.collectionView registerClass:CCSheetViewColumnCell.class forCellWithReuseIdentifier:CCSheetViewColumnCellOneTextReuseIdentifier];
         [self.collectionView registerClass:CCSheetViewColumnCell.class forCellWithReuseIdentifier:CCSheetViewColumnCellDoubleTextReuseIdentifier];
+        
         [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {}];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(firstViewClick:)];
+        
+        [self.firstColumnView addGestureRecognizer:tap];
     }
     return self;
 }
@@ -40,6 +45,12 @@ CCReuseIdentifierName * _Nonnull const CCFirstColumnFixedSheetCellReuseIdentifie
 - (void)willMoveToSuperview:(UIView *)newSuperview {
     if (!_reuse && newSuperview) {
         
+    }
+}
+
+- (void)firstViewClick:(id)gr {
+    if (self.didSelectedBlock) {
+        self.didSelectedBlock(self.belongIndexPath);
     }
 }
 

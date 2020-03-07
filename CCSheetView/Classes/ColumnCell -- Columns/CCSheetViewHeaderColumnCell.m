@@ -9,7 +9,7 @@
 #import "CCSheetViewHeaderColumnCell.h"
 #import "Masonry.h"
 
-CCReuseIdentifierName * _Nonnull const CCSheetViewColumnHeaderReuseIdentifier = @"CCSheetViewColumnHeaderReuseIdentifier";
+CCReuseIdentifierName * _Nonnull const CCSheetViewHeaderColumnCellReuseIdentifier = @"CCSheetViewHeaderColumnCellReuseIdentifier";
 
 @interface CCSheetViewHeaderColumnCell () {
     BOOL _reuse;

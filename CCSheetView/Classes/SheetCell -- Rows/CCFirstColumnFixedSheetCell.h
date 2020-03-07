@@ -8,10 +8,10 @@
 
 #import "CCSheetCellComponent.h"
 #import "CCFirstColumnView.h"
+
 #import "CCSheetViewColumnCell.h"
 #import "CCFirstColumnFixedFirstItem.h"
 #import "CCFirstColumnFixedContentItem.h"
-#import "CCSheetViewTypes.h"
 
 extern CCReuseIdentifierName * _Nonnull const CCFirstColumnFixedSheetCellReuseIdentifier;
 @class CCFirstColumnFixedSheetCell;

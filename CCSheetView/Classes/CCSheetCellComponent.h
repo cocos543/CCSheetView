@@ -1,6 +1,6 @@
 //
 //  CCSheetCellComponent.h
-//  
+//
 //
 //  Created by Cocos on 2020/2/28.
 //  Copyright © 2020 Cocos. All rights reserved.
@@ -8,15 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "CCSheetHeaderCellComponentContentProtocol.h"
-#import "CCPenetrateCollectionView.h"
+#import "CCSheetViewTypes.h"
 
 @class CCSheetCellComponent;
 
 extern NSString *_Nonnull const CCSheetCellComponentReuseIdentifier;
 
+typedef void(^CCSheetCellComponentDidSelectedBlock)(NSIndexPath * _Nonnull indexPath);
+
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol FMSheetTVCellScrollNotifyDelegate <NSObject>
+@protocol CCSheetTVCellScrollNotifyDelegate <NSObject>
 
 /// Cell滚动时, 会调用该代理方法
 ///
@@ -47,7 +49,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 注意collectionView其实和scrollView是同一个对象
 @property (nonatomic, readonly) UICollectionView *collectionView;
 
-@property (nonatomic, weak) id<FMSheetTVCellScrollNotifyDelegate> notificationDelegate;
+@property (nonatomic, weak) id<CCSheetTVCellScrollNotifyDelegate> notificationDelegate;
+
+/// 标记属于哪个indexPath
+@property (nonatomic, strong) NSIndexPath *belongIndexPath;
+
+@property (nonatomic, copy) CCSheetCellComponentDidSelectedBlock didSelectedBlock;
+
 
 @end
 

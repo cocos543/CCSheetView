@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CCSheetViewTypes.h"
 
-extern CCReuseIdentifierName * _Nonnull const CCSheetViewColumnHeaderReuseIdentifier;
+extern CCReuseIdentifierName * _Nonnull const CCSheetViewHeaderColumnCellReuseIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
 

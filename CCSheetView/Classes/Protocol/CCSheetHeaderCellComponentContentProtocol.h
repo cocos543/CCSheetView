@@ -12,6 +12,9 @@
 /// 所有SheetCellComponent组件和CCSheetHeaderComponent都必须实现该协议, 用来给每一行的列提供数据
 @protocol CCSheetHeaderCellComponentContentProtocol <NSObject>
 
+/// 和TableView类似, Cell在需要更新行数据的时候, 可以调用该方法更新
+- (void)componentReloadData;
+
 @property (nonatomic, strong) __kindof NSArray *contentItems;
 
 /// 同步横向偏移量时可用该属性

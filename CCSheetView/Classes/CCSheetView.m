@@ -1,6 +1,6 @@
 //
 //  CCSheetView.m
-//
+//  
 //
 //  Created by Cocos on 2020/2/27.
 //  Copyright © 2020 Cocos. All rights reserved.
@@ -28,7 +28,9 @@
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     self = [super initWithFrame:frame style:style];
     if (self) {
+        self.allowsSelection = NO;
         [self registerClass:CCSheetCellComponent.class forCellReuseIdentifier:CCSheetCellComponentReuseIdentifier];
+        [self registerClass:CCSheetHeaderComponent.class forHeaderFooterViewReuseIdentifier:CCSheetHeaderComponentReuseIdentifier];
         [self addObserver:self forKeyPath:NSStringFromSelector(@selector(contentOffset)) options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
@@ -54,13 +56,14 @@
     UITableViewCell *cell = [super dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     if ([cell isKindOfClass:CCSheetCellComponent.class]) {
         CCSheetCellComponent *sheetCell = (CCSheetCellComponent *)cell;
-        
+        sheetCell.belongIndexPath = indexPath;
         // 代理必须实现该方法
         sheetCell.columnWidths = [self.delegate sheetView:self columnsNumberAndWidthsInSection:indexPath.section];
+        [sheetCell componentReloadData];
         
         [sheetCell setNotificationDelegate:self];
         // 下面代码直接修改contentoffset是无效的,因为自动布局会设置scrollview的bounds或者frame, 触发_adjustContentOffsetIfNecessary方法, contentoffset会被设置为0
-        // 所以对contentOffset的调整要放到主队列最后
+        // 所以对contentOffset的调整要放到渲染队列末尾
         
         // 新的cell在出现在屏幕之前, 最好是能够知道他初始的contentOffset, 所以这里需要找到合适的contentOffset设置给他
         if (self.sectionOffsetCache[@(indexPath.section)] != nil) {
@@ -92,7 +95,7 @@
     return NO;
 }
 
-#pragma mark - FMSheetTVCellScrollNotifyDelegate
+#pragma mark - CCSheetTVCellScrollNotifyDelegate
 - (void)sheetCell:(CCSheetCellComponent *)cell scrollingOffset:(CGPoint)offset withState:(UIGestureRecognizerState)state {
     NSIndexPath *indexPath = [self indexPathForCell:cell];
     self.sectionOffsetCache[@(indexPath.section)] = [NSValue valueWithCGPoint:offset];
@@ -121,12 +124,14 @@
 - (void)sheetCell:(CCSheetCellComponent *)cell scrollingForHeaderOffset:(CGPoint)offset withState:(UIGestureRecognizerState)state {
     NSIndexPath *indexPath = [self indexPathForCell:cell];
     CCSheetHeaderComponent *header = (CCSheetHeaderComponent *)[self headerViewForSection:indexPath.section];
-    header.disableScrollNotify = YES;
-    [header.scrollView setContentOffset:offset animated:NO];
-    header.disableScrollNotify = NO;
+    if ([header isKindOfClass:CCSheetHeaderComponent.class]) {
+        header.disableScrollNotify = YES;
+        [header.scrollView setContentOffset:offset animated:NO];
+        header.disableScrollNotify = NO;
+    }
 }
 
-#pragma mark - FMSheetTVHeaderScrollNotifyDelegate
+#pragma mark - CCSheetTVHeaderScrollNotifyDelegate
 - (void)sheetHeader:(CCSheetHeaderComponent *)header scrollingOffset:(CGPoint)offset withState:(UIGestureRecognizerState)state {
     NSInteger section = header.belongSection;
     
@@ -153,9 +158,5 @@
             visibleCell.disableHeaderScrollNotify = NO;
         }
     }
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [super touchesBegan:touches withEvent:event];
 }
 @end

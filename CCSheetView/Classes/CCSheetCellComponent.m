@@ -27,7 +27,7 @@ NSString* const CCSheetCellComponentReuseIdentifier = @"CCSheetCellComponentReus
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self.contentView addSubview:self.scrollView];
         [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
@@ -55,7 +55,7 @@ NSString* const CCSheetCellComponentReuseIdentifier = @"CCSheetCellComponentReus
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         layout.minimumInteritemSpacing = 0.f;
         layout.minimumLineSpacing = 0.f;
-        _collectionView = [[CCPenetrateCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
         // UICollectionView会在展示的时候自动把背景颜色设置成白色, 但是如果刚从屏幕外创建并且进入屏幕里的话, 会有瞬间是灰色的, 影响体验, 所以一律创建的时候就是白色.
         _collectionView.backgroundColor = UIColor.whiteColor;
         _collectionView.showsVerticalScrollIndicator = NO;
@@ -63,7 +63,7 @@ NSString* const CCSheetCellComponentReuseIdentifier = @"CCSheetCellComponentReus
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
         _collectionView.backgroundColor = UIColor.clearColor;
-        _collectionView.allowsSelection = NO;
+        _collectionView.allowsSelection = YES;
         [_collectionView registerClass:UICollectionViewCell.class forCellWithReuseIdentifier:@"Cell"];
 
     }
@@ -73,6 +73,10 @@ NSString* const CCSheetCellComponentReuseIdentifier = @"CCSheetCellComponentReus
 
 - (UIScrollView *)scrollView {
     return self.collectionView;
+}
+
+- (void)componentReloadData {
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -158,14 +162,10 @@ NSString* const CCSheetCellComponentReuseIdentifier = @"CCSheetCellComponentReus
     return CGSizeMake(self.columnWidths[indexPath.item].doubleValue, self.frame.size.height - 1);
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [super touchesBegan:touches withEvent:event];
-}
-
-- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [super touchesMoved:touches withEvent:event];
-    // 手指移动时, 取消高亮状态
-    [self setHighlighted:NO animated:YES];
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.didSelectedBlock) {
+        self.didSelectedBlock(self.belongIndexPath);
+    }
 }
 
 @end

@@ -25,7 +25,7 @@ CCReuseIdentifierName * _Nonnull const CCFirstColumnFixedSheetHeaderReuseIdentif
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
-        [self.collectionView registerClass:CCSheetViewHeaderColumnCell.class forCellWithReuseIdentifier:CCSheetViewColumnHeaderReuseIdentifier];
+        [self.collectionView registerClass:CCSheetViewHeaderColumnCell.class forCellWithReuseIdentifier:CCSheetViewHeaderColumnCellReuseIdentifier];
         [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {}];
     }
     return self;
@@ -87,7 +87,7 @@ CCReuseIdentifierName * _Nonnull const CCFirstColumnFixedSheetHeaderReuseIdentif
     NSString *text = self.contentItems[indexPath.item];
     NSAssert(text != nil, @"CCFirstColumnFixedContentItem can't not be nil");
     
-    CCSheetViewHeaderColumnCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CCSheetViewColumnHeaderReuseIdentifier forIndexPath:indexPath];
+    CCSheetViewHeaderColumnCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CCSheetViewHeaderColumnCellReuseIdentifier forIndexPath:indexPath];
     cell.titleLabel.text = text;
     return cell;
 }

@@ -83,12 +83,4 @@ CCReuseIdentifierName * const CCSheetViewColumnCellDoubleTextReuseIdentifier = @
     return _secLabel;
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [super touchesBegan:touches withEvent:event];
-}
-
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-    return [super hitTest:point withEvent:event];
-}
-
 @end

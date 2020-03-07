@@ -9,6 +9,8 @@
 #import "CCSheetHeaderComponent.h"
 #import "Masonry.h"
 
+CCReuseIdentifierName * const CCSheetHeaderComponentReuseIdentifier = @"CCSheetHeaderComponentReuseIdentifier";
+
 @interface CCSheetHeaderComponent ()
 
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -54,6 +56,10 @@
 
 - (UIScrollView *)scrollView {
     return self.collectionView;
+}
+
+- (void)componentReloadData {
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UIScrollViewDelegate

@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "CCSheetHeaderCellComponentContentProtocol.h"
+#import "CCSheetViewTypes.h"
+
+extern CCReuseIdentifierName * _Nonnull const CCSheetHeaderComponentReuseIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
 @class CCSheetHeaderComponent;
