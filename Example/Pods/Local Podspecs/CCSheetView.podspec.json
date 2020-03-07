@@ -1,0 +1,22 @@
+{
+  "name": "CCSheetView",
+  "version": "0.1.0",
+  "summary": "A short description of CCSheetView.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/Cocos/CCSheetView",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Cocos": "543314602@qq.com"
+  },
+  "source": {
+    "git": "https://github.com/Cocos/CCSheetView.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "CCSheetView/Classes/**/*"
+}

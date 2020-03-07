@@ -1,0 +1,11 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'CCSheetView_Example' do
+  pod 'CCSheetView', :path => '../'
+
+  target 'CCSheetView_Tests' do
+    inherit! :search_paths
+  end
+end

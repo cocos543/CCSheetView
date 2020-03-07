@@ -1,0 +1,16 @@
+PODS:
+  - CCSheetView (0.1.0)
+
+DEPENDENCIES:
+  - CCSheetView (from `../`)
+
+EXTERNAL SOURCES:
+  CCSheetView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CCSheetView: da8457ca55aa64e04ecf769572e6dc1a8057479f
+
+PODFILE CHECKSUM: c52486e2335e0647796c7da7f047281963272af7
+
+COCOAPODS: 1.9.0.beta.2
