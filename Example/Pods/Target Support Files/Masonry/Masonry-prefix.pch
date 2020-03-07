@@ -10,9 +10,3 @@
 #endif
 #endif
 
-#import "CCSheetTVCell.h"
-#import "CCSheetView.h"
-
-FOUNDATION_EXPORT double CCSheetViewVersionNumber;
-FOUNDATION_EXPORT const unsigned char CCSheetViewVersionString[];
-

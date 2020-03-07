@@ -1,15 +1,22 @@
 PODS:
-  - CCSheetView (0.1.0)
+  - CCSheetView (0.1.0):
+    - Masonry (~> 1.1.0)
+  - Masonry (1.1.0)
 
 DEPENDENCIES:
   - CCSheetView (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Masonry
 
 EXTERNAL SOURCES:
   CCSheetView:
     :path: "../"
 
 SPEC CHECKSUMS:
-  CCSheetView: 55ea06b203faa7f0592296f9d6dfd9ca19fbdd2e
+  CCSheetView: 3a29325e81d4fcbc0ae72bcd27865e1360463078
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
 
 PODFILE CHECKSUM: 48f9679869a3daca69351fd5e3d7df7a5ee7c50a
 
