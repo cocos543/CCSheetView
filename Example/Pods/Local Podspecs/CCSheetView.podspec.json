@@ -9,14 +9,14 @@
     "file": "LICENSE"
   },
   "authors": {
-    "Cocos": "543314602@qq.com"
+    "Cocos543": "543314602@qq.com"
   },
   "source": {
     "git": "https://github.com/Cocos/CCSheetView.git",
     "tag": "0.1.0"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "9.0"
   },
   "source_files": "CCSheetView/Classes/**/*"
 }
