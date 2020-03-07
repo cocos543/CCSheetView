@@ -1,6 +1,6 @@
 //
 //  CCSheetView.m
-//  
+//
 //
 //  Created by Cocos on 2020/2/27.
 //  Copyright © 2020 Cocos. All rights reserved.
@@ -28,7 +28,7 @@
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     self = [super initWithFrame:frame style:style];
     if (self) {
-        [self registerClass:CCSheetCellComponent.class forCellReuseIdentifier:FMSheetCellReuseIdentifier];
+        [self registerClass:CCSheetCellComponent.class forCellReuseIdentifier:CCSheetCellComponentReuseIdentifier];
         [self addObserver:self forKeyPath:NSStringFromSelector(@selector(contentOffset)) options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
@@ -59,28 +59,20 @@
         sheetCell.columnWidths = [self.delegate sheetView:self columnsNumberAndWidthsInSection:indexPath.section];
         
         [sheetCell setNotificationDelegate:self];
-        // 新的cell在出现在屏幕之前, 最好是能够知道他初始的contentOffset, 所以这里需要找到合适的contentOffset设置给他
+        // 下面代码直接修改contentoffset是无效的,因为自动布局会设置scrollview的bounds或者frame, 触发_adjustContentOffsetIfNecessary方法, contentoffset会被设置为0
+        // 所以对contentOffset的调整要放到主队列最后
         
-        // 标记是否在屏幕上找到相同的section, 如果没有, 则从cache中找到初始的offset
-        BOOL bingoFlag = NO;
-        for (UITableViewCell *c in self.visibleCells) {
-            if (![c isKindOfClass:CCSheetCellComponent.class]) {
-                continue;
-            }
-            
-            if ([self indexPathForCell:c].section != indexPath.section) {
-                continue;
-            }
-            
-            CCSheetCellComponent *visibleCell = (CCSheetCellComponent *)c;
-            sheetCell.disableScrollNotify = YES;
-            [sheetCell.scrollView setContentOffset:visibleCell.scrollView.contentOffset animated:NO];
-            sheetCell.disableScrollNotify = NO;
-            bingoFlag = YES;
-            break;
-        }
-        if (!bingoFlag) {
-            [sheetCell.scrollView setContentOffset:[self.sectionOffsetCache[@(indexPath.section)] CGPointValue] animated:NO];
+        // 新的cell在出现在屏幕之前, 最好是能够知道他初始的contentOffset, 所以这里需要找到合适的contentOffset设置给他
+        if (self.sectionOffsetCache[@(indexPath.section)] != nil) {
+            [CATransaction begin];
+            [CATransaction setCompletionBlock:^{
+                sheetCell.disableScrollNotify = YES;
+                sheetCell.disableHeaderScrollNotify = YES;
+                [sheetCell.scrollView setContentOffset:[self.sectionOffsetCache[@(indexPath.section)] CGPointValue] animated:NO];
+                sheetCell.disableScrollNotify = NO;
+                sheetCell.disableHeaderScrollNotify = NO;
+            }];
+            [CATransaction commit];
         }
     }
     
@@ -134,7 +126,7 @@
     header.disableScrollNotify = NO;
 }
 
-#pragma mark - CCSheetTVHeaderScrollNotifyDelegate
+#pragma mark - FMSheetTVHeaderScrollNotifyDelegate
 - (void)sheetHeader:(CCSheetHeaderComponent *)header scrollingOffset:(CGPoint)offset withState:(UIGestureRecognizerState)state {
     NSInteger section = header.belongSection;
     

@@ -44,7 +44,7 @@
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
         _collectionView.backgroundColor = UIColor.clearColor;
-        _collectionView.allowsSelection = YES;
+        _collectionView.allowsSelection = NO;
         [_collectionView registerClass:UICollectionViewCell.class forCellWithReuseIdentifier:@"Cell"];
 
     }
@@ -116,13 +116,5 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [super touchesBegan:touches withEvent:event];
-}
-
-- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [super touchesMoved:touches withEvent:event];
 }
 @end

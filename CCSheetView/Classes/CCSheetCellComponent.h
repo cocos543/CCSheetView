@@ -12,7 +12,7 @@
 
 @class CCSheetCellComponent;
 
-extern NSString *_Nonnull const FMSheetCellReuseIdentifier;
+extern NSString *_Nonnull const CCSheetCellComponentReuseIdentifier;
 
 NS_ASSUME_NONNULL_BEGIN
 

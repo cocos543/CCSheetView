@@ -11,7 +11,7 @@
 
 #import "Masonry.h"
 
-NSString* const FMSheetCellReuseIdentifier = @"FMSheetCellReuseIdentifier";
+NSString* const CCSheetCellComponentReuseIdentifier = @"CCSheetCellComponentReuseIdentifier";
 
 @interface CCSheetCellComponent ()
 
@@ -27,6 +27,7 @@ NSString* const FMSheetCellReuseIdentifier = @"FMSheetCellReuseIdentifier";
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        // self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self.contentView addSubview:self.scrollView];
         [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.contentView);
@@ -55,12 +56,14 @@ NSString* const FMSheetCellReuseIdentifier = @"FMSheetCellReuseIdentifier";
         layout.minimumInteritemSpacing = 0.f;
         layout.minimumLineSpacing = 0.f;
         _collectionView = [[CCPenetrateCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        // UICollectionView会在展示的时候自动把背景颜色设置成白色, 但是如果刚从屏幕外创建并且进入屏幕里的话, 会有瞬间是灰色的, 影响体验, 所以一律创建的时候就是白色.
+        _collectionView.backgroundColor = UIColor.whiteColor;
         _collectionView.showsVerticalScrollIndicator = NO;
         _collectionView.showsHorizontalScrollIndicator = NO;
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
         _collectionView.backgroundColor = UIColor.clearColor;
-        _collectionView.allowsSelection = YES;
+        _collectionView.allowsSelection = NO;
         [_collectionView registerClass:UICollectionViewCell.class forCellWithReuseIdentifier:@"Cell"];
 
     }
@@ -153,10 +156,6 @@ NSString* const FMSheetCellReuseIdentifier = @"FMSheetCellReuseIdentifier";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     // 高度-1是为了确保cell的高度不要超过collectionView
     return CGSizeMake(self.columnWidths[indexPath.item].doubleValue, self.frame.size.height - 1);
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

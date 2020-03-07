@@ -1,9 +1,9 @@
 //
 //  CCSheetHeaderCellComponentContentProtocol.h
-//  FlowMiner
+//  
 //
 //  Created by Cocos on 2020/3/4.
-//  Copyright © 2020 YunFan. All rights reserved.
+//  Copyright © 2020 Cocos. All rights reserved.
 //
 
 #ifndef CCSheetHeaderCellComponentContentProtocol_h

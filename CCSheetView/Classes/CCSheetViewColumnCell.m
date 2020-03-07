@@ -8,6 +8,7 @@
 
 #import "CCSheetViewColumnCell.h"
 #import "Masonry.h"
+
 CCReuseIdentifierName * const CCSheetViewColumnCellOneTextReuseIdentifier = @"CCSheetViewColumnCellOneTextReuseIdentifier";
 
 CCReuseIdentifierName * const CCSheetViewColumnCellDoubleTextReuseIdentifier = @"CCSheetViewColumnCellDoubleTextReuseIdentifier";

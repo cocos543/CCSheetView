@@ -8,6 +8,7 @@
 
 #import "CCFirstColumnView.h"
 #import "Masonry.h"
+
 @implementation CCFirstColumnView
 
 - (instancetype)initWithFrame:(CGRect)frame {
