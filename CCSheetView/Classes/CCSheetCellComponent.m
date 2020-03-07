@@ -11,7 +11,7 @@
 
 #import "Masonry.h"
 
-NSString* const CCSheetCellReuseIdentifier = @"CCSheetCellReuseIdentifier";
+NSString* const FMSheetCellReuseIdentifier = @"FMSheetCellReuseIdentifier";
 
 @interface CCSheetCellComponent ()
 
@@ -20,7 +20,9 @@ NSString* const CCSheetCellReuseIdentifier = @"CCSheetCellReuseIdentifier";
 @end
 
 @implementation CCSheetCellComponent
-@synthesize contentItems;
+@synthesize contentItems = _contentItems;
+@synthesize columnWidths = _columnWidths;
+@synthesize disableScrollNotify = _disableScrollNotify;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -31,6 +33,13 @@ NSString* const CCSheetCellReuseIdentifier = @"CCSheetCellReuseIdentifier";
         }];
     }
     return self;
+}
+
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
 }
 
 - (void)prepareForReuse {
@@ -45,14 +54,15 @@ NSString* const CCSheetCellReuseIdentifier = @"CCSheetCellReuseIdentifier";
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         layout.minimumInteritemSpacing = 0.f;
         layout.minimumLineSpacing = 0.f;
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        _collectionView = [[CCPenetrateCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
         _collectionView.showsVerticalScrollIndicator = NO;
         _collectionView.showsHorizontalScrollIndicator = NO;
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
         _collectionView.backgroundColor = UIColor.clearColor;
-
+        _collectionView.allowsSelection = YES;
         [_collectionView registerClass:UICollectionViewCell.class forCellWithReuseIdentifier:@"Cell"];
+
     }
     return _collectionView;
 }
@@ -68,11 +78,19 @@ NSString* const CCSheetCellReuseIdentifier = @"CCSheetCellReuseIdentifier";
     if (!self.disableScrollNotify && [self.notificationDelegate respondsToSelector:@selector(sheetCell:scrollingOffset:withState:)]) {
         [self.notificationDelegate sheetCell:self scrollingOffset:scrollView.contentOffset withState:UIGestureRecognizerStateBegan];
     }
+    
+    if (!self.disableHeaderScrollNotify && [self.notificationDelegate respondsToSelector:@selector(sheetCell:scrollingForHeaderOffset:withState:)]) {
+        [self.notificationDelegate sheetCell:self scrollingForHeaderOffset:scrollView.contentOffset withState:UIGestureRecognizerStateBegan];
+    }
 }
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
     if (!self.disableScrollNotify && [self.notificationDelegate respondsToSelector:@selector(sheetCell:scrollingOffset:withState:)]) {
         [self.notificationDelegate sheetCell:self scrollingOffset:scrollView.contentOffset withState:UIGestureRecognizerStateEnded];
+    }
+    
+    if (!self.disableHeaderScrollNotify && [self.notificationDelegate respondsToSelector:@selector(sheetCell:scrollingForHeaderOffset:withState:)]) {
+        [self.notificationDelegate sheetCell:self scrollingForHeaderOffset:scrollView.contentOffset withState:UIGestureRecognizerStateEnded];
     }
 }
 
@@ -84,17 +102,33 @@ NSString* const CCSheetCellReuseIdentifier = @"CCSheetCellReuseIdentifier";
             [self.notificationDelegate sheetCell:self scrollingOffset:scrollView.contentOffset withState:UIGestureRecognizerStateEnded];
         }
     }
+    
+    if (!self.disableHeaderScrollNotify && [self.notificationDelegate respondsToSelector:@selector(sheetCell:scrollingForHeaderOffset:withState:)]) {
+        if (decelerate) {
+            [self.notificationDelegate sheetCell:self scrollingForHeaderOffset:scrollView.contentOffset withState:UIGestureRecognizerStateChanged];
+        }else {
+            [self.notificationDelegate sheetCell:self scrollingForHeaderOffset:scrollView.contentOffset withState:UIGestureRecognizerStateEnded];
+        }
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (!self.disableScrollNotify && [self.notificationDelegate respondsToSelector:@selector(sheetCell:scrollingOffset:withState:)]) {
         [self.notificationDelegate sheetCell:self scrollingOffset:scrollView.contentOffset withState:UIGestureRecognizerStateEnded];
     }
+    
+    if (!self.disableHeaderScrollNotify && [self.notificationDelegate respondsToSelector:@selector(sheetCell:scrollingForHeaderOffset:withState:)]) {
+        [self.notificationDelegate sheetCell:self scrollingForHeaderOffset:scrollView.contentOffset withState:UIGestureRecognizerStateEnded];
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (!self.disableScrollNotify && [self.notificationDelegate respondsToSelector:@selector(sheetCell:scrollingOffset:withState:)]) {
         [self.notificationDelegate sheetCell:self scrollingOffset:scrollView.contentOffset withState:UIGestureRecognizerStateChanged];
+    }
+    
+    if (!self.disableHeaderScrollNotify && [self.notificationDelegate respondsToSelector:@selector(sheetCell:scrollingForHeaderOffset:withState:)]) {
+        [self.notificationDelegate sheetCell:self scrollingForHeaderOffset:scrollView.contentOffset withState:UIGestureRecognizerStateChanged];
     }
 }
 
@@ -119,6 +153,20 @@ NSString* const CCSheetCellReuseIdentifier = @"CCSheetCellReuseIdentifier";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     // 高度-1是为了确保cell的高度不要超过collectionView
     return CGSizeMake(self.columnWidths[indexPath.item].doubleValue, self.frame.size.height - 1);
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [super touchesBegan:touches withEvent:event];
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [super touchesMoved:touches withEvent:event];
+    // 手指移动时, 取消高亮状态
+    [self setHighlighted:NO animated:YES];
 }
 
 @end

@@ -8,7 +8,6 @@
 
 #import "CCSheetViewColumnCell.h"
 #import "Masonry.h"
-
 CCReuseIdentifierName * const CCSheetViewColumnCellOneTextReuseIdentifier = @"CCSheetViewColumnCellOneTextReuseIdentifier";
 
 CCReuseIdentifierName * const CCSheetViewColumnCellDoubleTextReuseIdentifier = @"CCSheetViewColumnCellDoubleTextReuseIdentifier";
@@ -17,15 +16,13 @@ CCReuseIdentifierName * const CCSheetViewColumnCellDoubleTextReuseIdentifier = @
     BOOL _reuse;
 }
 
-
-
 @end
 
 @implementation CCSheetViewColumnCell
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        
+         
     }
     return self;
 }
@@ -83,6 +80,14 @@ CCReuseIdentifierName * const CCSheetViewColumnCellDoubleTextReuseIdentifier = @
         _secLabel.adjustsFontSizeToFitWidth = YES;
     }
     return _secLabel;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [super touchesBegan:touches withEvent:event];
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    return [super hitTest:point withEvent:event];
 }
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "CCFirstColumnFixedSheetCell.h"
-#import "CCSheetViewColumnCell.h"
 #import "Masonry.h"
 
 CCReuseIdentifierName * _Nonnull const CCFirstColumnFixedSheetCellReuseIdentifier = @"CCFirstColumnFixedSheetCellReuseIdentifier";
@@ -27,6 +26,7 @@ CCReuseIdentifierName * _Nonnull const CCFirstColumnFixedSheetCellReuseIdentifie
         // TODO:
         [self.collectionView registerClass:CCSheetViewColumnCell.class forCellWithReuseIdentifier:CCSheetViewColumnCellOneTextReuseIdentifier];
         [self.collectionView registerClass:CCSheetViewColumnCell.class forCellWithReuseIdentifier:CCSheetViewColumnCellDoubleTextReuseIdentifier];
+        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {}];
     }
     return self;
 }
@@ -36,53 +36,51 @@ CCReuseIdentifierName * _Nonnull const CCFirstColumnFixedSheetCellReuseIdentifie
     _reuse = YES;
 }
 
-
+// 注意, reloadData时, 该方法不会被调用. 该方法在Cell被dequeue创建的时候就会被调用. 因为布局子界面需要firstItem等参数, 所以不能在该方法布局界面
 - (void)willMoveToSuperview:(UIView *)newSuperview {
     if (!_reuse && newSuperview) {
-        if (self.columnWidths.count <= 0) {
-            return;
-        }
-        if (!self.firstColumnContentView) {
-            return;
-        }
-        
-        if (self.contentItems.count <= 0) {
-            return;
-        }
-        
-        [self.contentView addSubview:self.firstColumnContentView];
-        [self.firstColumnContentView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.centerY.height.equalTo(self.contentView);
-            make.width.mas_equalTo(self.columnWidths[0]);
-        }];
-        
-        [self.scrollView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(self.firstColumnContentView.mas_trailing);
-            make.height.trailing.centerY.equalTo(self.contentView);
-        }];
-        
-        self.firstColumnContentView.iconImgView.image = self.contentItems[0].icon;
-        self.firstColumnContentView.titleLabel.attributedText = self.contentItems[0].title;
         
     }
 }
 
-- (UIView *)firstColumnContentView {
-    if (!_firstColumnContentView) {
-        UILabel *label = UILabel.new;
-        _firstColumnContentView = CCFirstColumnView.new;
-        [_firstColumnContentView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_firstColumnContentView);
-        }];
+
+- (CCFirstColumnView *)firstColumnView {
+    if (!_firstColumnView) {
+        _firstColumnView = CCFirstColumnView.new;
+        [self.contentView addSubview:_firstColumnView];
     }
-    return _firstColumnContentView;
+    return _firstColumnView;
+}
+
+- (void)setFirstItem:(CCFirstColumnFixedFirstItem *)firstItem {
+    _firstItem = firstItem;
+    self.firstColumnView.iconImgView.image = self.firstItem.icon;
+    self.firstColumnView.titleLabel.attributedText = self.firstItem.title;
+}
+
+- (void)setColumnWidths:(NSArray<NSNumber *> *)columnWidths {
+    [super setColumnWidths:columnWidths];
+    
+    if (columnWidths.count <= 0) {
+        return;
+    }
+    
+    [self.firstColumnView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.leading.centerY.height.equalTo(self.contentView);
+        make.width.mas_equalTo(columnWidths[0]);
+    }];
+    
+    [self.scrollView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.firstColumnView.mas_trailing);
+        make.height.trailing.centerY.equalTo(self.contentView);
+    }];
 }
 
 
 #pragma mark - UICollectionViewDataSource
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CCFirstColumnFixedContentItem *item = self.contentItems[indexPath.item + 1];
+    CCFirstColumnFixedContentItem *item = self.contentItems[indexPath.item];
+    NSAssert(item != nil, @"CCFirstColumnFixedContentItem can't not be nil");
     
     CCSheetViewColumnCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:item.identifier forIndexPath:indexPath];
     cell.firLabel.attributedText = item.texts[0];
@@ -99,7 +97,7 @@ CCReuseIdentifierName * _Nonnull const CCFirstColumnFixedSheetCellReuseIdentifie
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    // 高度-1是为了确保cell的高度不要超过collectionView
+    // height-1是为了确保cell的高度不要超过collectionView
     return CGSizeMake(self.columnWidths[indexPath.item + 1].doubleValue, self.frame.size.height - 1);
 }
 

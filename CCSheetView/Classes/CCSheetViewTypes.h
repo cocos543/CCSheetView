@@ -6,11 +6,11 @@
 //  Copyright © 2020 Cocos. All rights reserved.
 //
 
-#ifndef CCSheetViewTypes_h
-#define CCSheetViewTypes_h
+#ifndef FMSheetViewTypes_h
+#define FMSheetViewTypes_h
 
 #import <UIKit/UIKit.h>
 
 typedef NSString CCReuseIdentifierName;
 
-#endif /* CCSheetViewTypes_h */
+#endif /* FMSheetViewTypes_h */
