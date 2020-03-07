@@ -31,13 +31,8 @@
         self.allowsSelection = NO;
         [self registerClass:CCSheetCellComponent.class forCellReuseIdentifier:CCSheetCellComponentReuseIdentifier];
         [self registerClass:CCSheetHeaderComponent.class forHeaderFooterViewReuseIdentifier:CCSheetHeaderComponentReuseIdentifier];
-        [self addObserver:self forKeyPath:NSStringFromSelector(@selector(contentOffset)) options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
-}
-
-- (void)dealloc {
-    [self removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentOffset))];
 }
 
 - (__kindof UITableViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifier:(NSString *)identifier forSection:(NSInteger)section {
@@ -80,12 +75,6 @@
     }
     
     return cell;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentOffset))]) {
-        
-    }
 }
 
 - (BOOL)isComponentCell:(UITableViewCell *)c inTheSameSection:(NSInteger)section {
