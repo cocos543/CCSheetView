@@ -6,6 +6,8 @@
 //  Copyright © 2020 Cocos. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+#import "CCSheetViewTypes.h"
 #import "CCSheetCellComponent.h"
 #import "CCSheetHeaderComponent.h"
 
