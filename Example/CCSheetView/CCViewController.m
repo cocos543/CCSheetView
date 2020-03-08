@@ -81,7 +81,7 @@
     // 要支持横向滚动的header, 必须调用dequeueReusableHeaderFooterViewWithIdentifier:forSection方法, 这样这个header才会跟着所在的section里的cell同步滚动.
     
     if (section == 1) {
-        UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:CCSheetHeaderComponentReuseIdentifier forSection:section];
+        CCSheetHeaderComponent *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:CCSheetHeaderComponentReuseIdentifier forSection:section];
         return header;
     }else if (section == 2) {
         CCFirstColumnFixedSheetHeader *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:CCFirstColumnFixedSheetHeaderReuseIdentifier forSection:section];

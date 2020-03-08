@@ -1,35 +1,35 @@
 # CCSheetView
 
-[![CI Status](https://img.shields.io/travis/Cocos/CCSheetView.svg?style=flat)](https://travis-ci.org/Cocos/CCSheetView)
-[![Version](https://img.shields.io/cocoapods/v/CCSheetView.svg?style=flat)](https://cocoapods.org/pods/CCSheetView)
-[![License](https://img.shields.io/cocoapods/l/CCSheetView.svg?style=flat)](https://cocoapods.org/pods/CCSheetView)
-[![Platform](https://img.shields.io/cocoapods/p/CCSheetView.svg?style=flat)](https://cocoapods.org/pods/CCSheetView)
+[! [CI Status] (https://img.shields.io/travis/Cocos/CCSheetView.svg?style=flat)] (https://travis-ci.org/Cocos/CCSheetView)
+[! [Version] (https://img.shields.io/cocoapods/v/CCSheetView.svg?style=flat)] (https://cocoapods.org/pods/CCSheetView)
+[! [License] (https://img.shields.io/cocoapods/l/CCSheetView.svg?style=flat)] (https://cocoapods.org/pods/CCSheetView)
+[! [Platform] (https://img.shields.io/cocoapods/p/CCSheetView.svg?style=flat)] (https://cocoapods.org/pods/CCSheetView)
 
-## 功能介绍
+## Features
 
-**CCSheetView**继承自**UITableView**, 它实现了Cell的横向滚动功能, 并且支持多个Cell横向同步滚动, 效果看起来就像Office Excel, 能展示出行列视图.
+** CCSheetView ** inherits from ** UITableView **, which implements the horizontal scrolling function of the Cell, and supports multiple cells' horizontal synchronous scrolling. The effect looks like Office Excel, and it can display the row and column views.
 
-开发者可以通过继承内部的Component, 来定制自己的Cell界面, 具体定制方法可以继续往下看`教程`部分.
+Developers can customize their own Cell interface by inheriting the internal Component. For specific customization methods, please continue to see the `Tutorial` section.
 
-**效果图:**
+** Design: **
 <div>
-<img src="https://raw.githubusercontent.com/cocos543/CCSheetView/dev/demo.gif"  width="40%"/>
-</div>
+<img src = "https://raw.githubusercontent.com/cocos543/CCSheetView/dev/demo.gif" width = "40%" />
+</ div>
 
 
-## 兼容性
+## compatibility
 
-支持 iOS9 以上
+Support iOS9 and above
 
-## 安装
+## Installation
 
-```ruby
+``` ruby
 pod 'CCSheetView'
 ```
 
-## 教程
+## Tutorial
 
-`CCSheetViewDelegate`继承自`UITableViewDelegate`,  开发者可以实现`CCSheetViewDelegate`的方法, 用来告诉**CCSheetView**当前的Section一共有多少列.
+`CCSheetViewDelegate` inherits from` UITableViewDelegate`. Developers can implement the method `CCSheetViewDelegate` to tell ** CCSheetView ** how many columns the current Section has.
 
 ``` objc
 - (NSArray<NSNumber *> *)sheetView:(CCSheetView *)sheetView columnsNumberAndWidthsInSection:(NSInteger)section {
@@ -42,9 +42,9 @@ pod 'CCSheetView'
 }
 ```
 
-随后, 在需要支持横向滚动的Section里, 开发者在返回Cell的时候, 提供继承自Component的Cell或者Header的对象.  也可以返回普通的Cell, 这样这个Cell就和平时UITableView中的没什么区别了
+Subsequently, in the Section that needs to support horizontal scrolling, the developer provides an object that inherits from the Cell or Header of the Component when returning the Cell. It can also return an ordinary Cell, so that this Cell is no different from the usual UITableView
 
-> 需要注意的是, Header对象的创建必须使用`dequeueReusableHeaderFooterViewWithIdentifier:forSection`方法,  否则Header的滚动事件不会传递给对应Section中的Cell
+> Note that the creation of the Header object must use the `dequeueReusableHeaderFooterViewWithIdentifier: forSection` method, otherwise the scroll event of the Header will not be passed to the Cell in the corresponding Section
 
 ``` objc
 // 最简单的用法, 返回类库自带的Component
@@ -61,9 +61,9 @@ pod 'CCSheetView'
 }
 ```
 
-> 处理Column的点击事件, 需要把处理逻辑赋值给`cell.didSelectedBlock`这个Block.
+> To handle the click event of Column, you need to assign the processing logic to the cell.didSelectedBlock block.
 
-下面代码演示了如果定制UI, 其中`CCFirstColumnFixedSheetHeader `和`CCFirstColumnFixedSheetCell `就是类库自带的一个首列被固定住的视图, 这种视图在股票软件里面是比较常见的.
+The following code demonstrates that if you customize the UI, `CCFirstColumnFixedSheetHeader` and` CCFirstColumnFixedSheetCell` are a view with the first column fixed in the class library.This view is more common in stock software.
 
 ``` objc
 - (UIView *)tableView:(CCSheetView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -125,7 +125,7 @@ pod 'CCSheetView'
 ```
 
 
-## 作者
+## Author
 
 Cocos543, 543314602@qq.com
 

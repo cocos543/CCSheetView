@@ -25,6 +25,7 @@
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		93859217C6E6751E14985269 /* libPods-CCSheetView_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F84A4F56451F3F51E02A955B /* libPods-CCSheetView_Tests.a */; };
 		ED9A72A9241497D3008E56E2 /* CCTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED9A72A7241497D3008E56E2 /* CCTableViewCell.xib */; };
+		ED9A72AB2414A7BC008E56E2 /* README-EN.md in Resources */ = {isa = PBXBuildFile; fileRef = ED9A72AA2414A7BC008E56E2 /* README-EN.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		A2A60418D5563DD0CC041B39 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		DDE09A93C09A5E25236F4187 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		ED9A72A7241497D3008E56E2 /* CCTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CCTableViewCell.xib; sourceTree = "<group>"; };
+		ED9A72AA2414A7BC008E56E2 /* README-EN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = "README-EN.md"; path = "../README-EN.md"; sourceTree = "<group>"; };
 		F84A4F56451F3F51E02A955B /* libPods-CCSheetView_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CCSheetView_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -183,6 +185,7 @@
 			children = (
 				6CDDB64ECC0FE09EB4A222C3 /* CCSheetView.podspec */,
 				A2A60418D5563DD0CC041B39 /* README.md */,
+				ED9A72AA2414A7BC008E56E2 /* README-EN.md */,
 				DDE09A93C09A5E25236F4187 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
@@ -283,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
+				ED9A72AB2414A7BC008E56E2 /* README-EN.md in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				ED9A72A9241497D3008E56E2 /* CCTableViewCell.xib in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
