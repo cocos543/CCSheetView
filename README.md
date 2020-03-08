@@ -7,11 +7,9 @@
 
 ## 功能介绍
 
-**CCSheetView**继承自**UITableView**, 它实现了Cell的横向滚动功能, 并且支持多个Cell横向同步滚动, 效果看起来就像Office Excel, 能展示出行列视图.
+**CCSheetView**继承自**UITableView**, 它实现了Cell的横向滚动功能, 并且支持多个Cell横向同步滚动, 效果看起来就像Office Excel, 能展示出行列视图. 用户可以通过继承内部的Component, 来定制自己的Cell界面.
 
-通过继承内部的Component, 来定制自己的Cell界面.
-
- 其中Component内部已经集成了一个UICollectionView,  并提供了UIScrollView和UICollectionView两个属性(指向同一个CollectionView), 用户可以向UICollectionView注册新的ColumnCell来定制列UI, 这样的好处是横向滚动也支持复用, 也可以简单使用UIScrollView作为横向滚动的承载视图. 或者完成重写Component的布局, 自己设计Cell. 
+其中Component内部已经集成了一个UICollectionView, 并提供了UIScrollView和UICollectionView两个属性(指向同一个CollectionView), 用户可以向UICollectionView注册新的ColumnCell来定制列UI, 这样的好处是横向滚动也支持复用, 也可以简单使用UIScrollView作为横向滚动的承载视图. 或者完成重写Component的布局, 自己设计Cell. 
  
  需要注意的是, Cell和Header子类必须要继承自Component, 提供UIScrollView或者子类, 这个是支持横向滚动的关键.
 
@@ -50,7 +48,7 @@ pod 'CCSheetView'
 
 随后, 在需要支持横向滚动的Section里, 开发者在返回Cell的时候, 提供继承自Component的Cell或者Header的对象.  也可以返回普通的Cell, 这样这个Cell就和平时UITableView中的没什么区别了.
 
-> Component类中有一个ScrollView属性, 这个属性就是用来实现横向滚动, 开发者可以根据需求来重写ScrollView的布局
+> Component类中有一个ScrollView属性, 这个属性就是用来实现横向滚动, 开发者可以根据需求来重写ScrollView的布局, 默认的ScrollView指向UICollectionView, 所以列和行一样也是支持复用的.
 > 需要注意的是, Header对象的创建必须使用`dequeueReusableHeaderFooterViewWithIdentifier:forSection`方法, 否则Header的滚动事件不会传递给对应Section中的Cell
 
 ``` objc
