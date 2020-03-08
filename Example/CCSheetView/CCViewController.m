@@ -12,6 +12,8 @@
 #import "CCFirstColumnFixedSheetHeader.h"
 #import "Masonry.h"
 
+#define ColumnCount 100
+
 @interface CCViewController ()<UITableViewDataSource, CCSheetViewDelegate>
 
 @property (nonatomic, strong) CCSheetView *sheetView;
@@ -84,13 +86,18 @@
     }else if (section == 2) {
         CCFirstColumnFixedSheetHeader *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:CCFirstColumnFixedSheetHeaderReuseIdentifier forSection:section];
         header.firstColumnTitleLabel.text = @"首列标题";
-        header.contentItems = @[@"列标题", @"列标题", @"列标题", @"列标题", @"列标题", @"列标题"];
+        NSInteger count = [self sheetView:tableView columnsNumberAndWidthsInSection:section].count - 1;
+        NSMutableArray *contents = @[].mutableCopy;
+        for (int i = 0; i < count; i++) {
+            [contents addObject:@"列标题"];
+        }
+        header.contentItems = contents;
         return header;
     }
     return nil;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(CCSheetView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
         CCSheetCellComponent *cell = [tableView dequeueReusableCellWithIdentifier:CCSheetCellComponentReuseIdentifier forIndexPath:indexPath];
         cell.didSelectedBlock = ^(NSIndexPath * _Nonnull indexPath) {
@@ -108,7 +115,7 @@
         
         NSMutableArray *contents = @[].mutableCopy;
         //contentItems的数量和列数对应, contentItems.count+1等于总列数
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < [self sheetView:tableView columnsNumberAndWidthsInSection:indexPath.section].count - 1; i++) {
             CCFirstColumnFixedContentItem *item = [[CCFirstColumnFixedContentItem alloc] initWithIdentifier:CCSheetViewColumnCellOneTextReuseIdentifier];
             item.texts = @[[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"滚动列%@", @(i)]]];
             [contents addObject:item];
@@ -132,7 +139,7 @@
     if (section == 1) {
         return @[@(100), @(100), @(100), @(100), @(100), @(100), @(100), @(100)];
     }else {
-        return @[@(150), @(100), @(100), @(100), @(100), @(100), @(100)];
+        return @[@(150), @(100), @(100), @(100), @(100), @(100), @(100), @(100), @(100), @(100), @(100), @(100), @(100)];
     }
 }
 
