@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'CCSheetView'
   s.version          = '0.1.0'
-  s.summary          = '**CCSheetView**继承自**UITableView**, 它实现了Cell的横向滚动功能, 并且支持多个Cell横向同步滚动, 效果看起来就像Office Excel, 能展示出行列视图.'
+  s.summary          = 'CCSheetView继承自UITableView, 它实现了Cell的横向滚动功能, 并且支持多个Cell横向同步滚动, 效果看起来就像Office Excel, 能展示出行列视图.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
